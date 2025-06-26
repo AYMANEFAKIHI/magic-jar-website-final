@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagicJar - Unjar the Wonder</title>
+    <!-- Tailwind CSS CDN - All Tailwind utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@400;700&family=Quicksand:wght@300;400;500;700&family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS Styles - ALL custom styles (colors, animations, overrides) are here -->
+    <style>
+        /* Custom Tailwind Colors - Defined as CSS variables for use */
+        :root {
+            --color-blush-pink: #f8c8dc;
+            --color-lavender: #b57edc;
+            --color-baby-blue: #89cff0;
+            --color-dark-purple: #4a235a;
+            --color-light-gray: #f4f4f4;
+            --color-black: #000000; /* Explicitly define black */
+        }
+
+        /* Base fonts */
+        html {
+            font-family: 'Inter', sans-serif; /* Default for html */
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif; /* Specifically for headings */
+        }
+        p, a, input, button, span, label {
+            font-family: 'Quicksand', sans-serif; /* Specifically for body text elements */
+        }
+
+        /* Custom glowing effect */
+        .glow-text {
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .glow-button {
+            box-shadow: 0 0 15px rgba(181, 126, 220, 0.8), 0 0 30px rgba(181, 126, 220, 0.6);
+        }
+        .glow-card {
+            box-shadow: 0 0 15px rgba(248, 200, 220, 0.8), 0 0 30px rgba(248, 200, 220, 0.6);
+        }
+
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 4.5s ease-in-out infinite;
+        }
+        .animation-delay-1000 { animation-delay: 1s; }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-3000 { animation-delay: 3s; }
+
+        /* Sparkle on hover effect */
+        @keyframes sparkle-pulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(35deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+        }
+        .sparkle-on-hover {
+            position: relative;
+            overflow: hidden;
+        }
+        .sparkle-on-hover::after {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            font-size: 2.8rem;
+            pointer-events: none;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            z-index: 10;
+        }
+        .sparkle-on-hover:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            animation: sparkle-pulse 2s infinite;
+        }
+
+        /* Starry background effect */
+        .custom-starry-background {
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.15) 0%, transparent 25%),
+                        radial-gradient(circle at bottom right, rgba(255,255,255,0.15) 0%, transparent 25%),
+                        radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 30%),
+                        radial-gradient(circle at bottom left, rgba(255,255,255,0.1) 0%, transparent 30%);
+            background-size: 400% 400%; /* For dynamic movement */
+            animation: twinkle-move 20s infinite alternate;
+        }
+
+        @keyframes twinkle-move {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* Animated glowing border effect for sections */
+        .animated-border {
+            position: relative;
+            border-radius: 2.5rem; /* Slightly larger for visual appeal */
+            overflow: hidden;
+        }
+
+        .animated-border::before {
+            content: '';
+            position: absolute;
+            top: -15px; /* Larger blur area */
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            background: linear-gradient(45deg, #f8c8dc, #b57edc, #89cff0, #b57edc, #f8c8dc);
+            background-size: 400% 400%;
+            animation: gradient-glow 12s ease infinite;
+            z-index: -1;
+            filter: blur(20px); /* More blur */
+            border-radius: 3rem; /* Slightly larger to blur outside */
+            opacity: 0.8; /* Subtle transparency */
+        }
+
+        @keyframes gradient-glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* CUSTOM COLOR OVERRIDES - For Header and Footer */
+        /* Header text color */
+        header h1 {
+            color: var(--color-dark-purple); /* Header name: from white to dark-purple */
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adjust glow for dark text */
+        }
+        header nav ul li a {
+            color: var(--color-dark-purple); /* Header navigation links: from white to dark-purple */
+        }
+        header nav ul li a:hover {
+            color: var(--color-lavender); /* Header navigation links hover: remains subtle lavender */
+        }
+
+        /* Footer text color */
+        footer, footer p, footer nav ul li a {
+            color: var(--color-black); /* Footer background text and links: from white to black */
+        }
+        footer nav ul li a:hover {
+            color: var(--color-blush-pink); /* Footer navigation links hover: remains subtle blush pink */
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blush-pink via-lavender to-baby-blue text-dark-purple min-h-screen flex flex-col items-center custom-starry-background">
+
+    <!-- Header -->
+    <header class="w-full py-6 text-center z-20 sticky top-0 bg-gradient-to-b from-blush-pink/80 to-transparent backdrop-blur-sm">
+        <h1 class="text-5xl font-bold text-dark-purple glow-text">MagicJar</h1>
+        <nav class="mt-4">
+            <ul class="flex justify-center space-x-6 text-dark-purple text-lg font-semibold">
+                <li><a href="#hero" class="hover:text-lavender transition-colors duration-300">Home</a></li>
+                <li><a href="#what-is-magicjar" class="hover:text-lavender transition-colors duration-300">What It Is</a></li>
+                <li><a href="#gallery" class="hover:text-lavender transition-colors duration-300">Gallery</a></li>
+                <li><a href="#about-us" class="hover:text-lavender transition-colors duration-300">Our Story</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative w-full min-h-screen flex flex-col justify-center items-center text-center p-6 sm:p-8 md:p-12 lg:p-16">
+        <div class="absolute inset-0 z-0 overflow-hidden opacity-70">
+            <div class="absolute top-1/4 left-[10%] w-40 h-40 bg-white rounded-full mix-blend-soft-light animate-float blur-2xl opacity-30"></div>
+            <div class="absolute bottom-1/3 right-[15%] w-52 h-52 bg-white rounded-full mix-blend-soft-light animate-float blur-2xl animation-delay-2000 opacity-30"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white rounded-full mix-blend-soft-light animate-float blur-2xl opacity-30"></div>
+            <div class="absolute bottom-[5%] left-[20%] w-36 h-36 bg-white rounded-full mix-blend-soft-light animate-float blur-2xl animation-delay-3000 opacity-30"></div>
+        </div>
+
+        <div class="relative z-10 max-w-3xl mx-auto bg-white bg-opacity-35 backdrop-blur-md p-8 sm:p-10 rounded-3xl shadow-2xl glow-card transform hover:scale-105 transition-transform duration-500 animated-border">
+            <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-dark-purple glow-text mb-4 leading-tight">
+                ✨ MagicJar is Coming ✨
+            </h1>
+            <p class="text-xl sm:text-2xl text-dark-purple mb-8">
+                A little wonder, bottled just for you.
+            </p>
+            <form
+                id="notifyForm"
+                class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full"
+                action="https://formspree.io/f/mqabgogl"
+                method="POST"
+            >
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    aria-label="Email address for notification"
+                    class="p-4 rounded-full border-2 border-white focus:outline-none focus:ring-4 focus:ring-blush-pink focus:border-transparent w-full sm:w-2/3 text-lg bg-white bg-opacity-80 text-dark-purple placeholder-dark-purple/60"
+                    required
+                >
+                <button
+                    type="submit"
+                    class="bg-lavender text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-dark-purple transition-colors duration-300 glow-button transform hover:scale-105 active:scale-95 sparkle-on-hover w-full sm:w-1/3"
+                >
+                    Notify Me First
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- What is MagicJar Section -->
+    <section id="what-is-magicjar" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-white bg-opacity-60 backdrop-blur-md rounded-3xl shadow-xl mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">What is MagicJar?</h2>
+        <p class="text-lg sm:text-xl max-w-3xl mx-auto mb-12 text-dark-purple">
+            Each jar is filled with curated surprises to spark joy – mini notes, stickers, and treasures for any moment.
+            Discover a world of themed delights, perfect for self-indulgence or a thoughtful gift.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="bg-white p-6 rounded-2xl shadow-md glow-card flex flex-col items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                <span class="text-6xl mb-4">🌍</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Adventure Awaits</h3>
+                <p class="text-md text-dark-purple">Inspire journeys and new horizons with tales and tokens of exploration.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-md glow-card flex flex-col items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                <span class="text-6xl mb-4">🧘‍♀️</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Self-Care Sanctuary</h3>
+                <p class="text-md text-dark-purple">Calming notes and soothing treasures for moments of peace and reflection.</p>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-md glow-card flex flex-col items-center justify-center transform hover:scale-105 transition-transform duration-300">
+                <span class="text-6xl mb-4">🕰️</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Nostalgia Trip</h3>
+                <p class="text-md text-dark-purple">Relive cherished memories with retro delights and heartwarming reminders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why You'll Love It Section -->
+    <section id="why-love-it" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-light-gray bg-opacity-70 backdrop-blur-md shadow-inner mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">Why You'll Love It</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="flex flex-col items-center bg-white p-6 rounded-2xl shadow-md glow-card transform hover:scale-105 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-lavender mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                </svg>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Thoughtfully Curated</h3>
+                <p class="text-md text-dark-purple">Every item is hand-picked for quality and charm, ensuring a unique experience.</p>
+            </div>
+            <div class="flex flex-col items-center bg-white p-6 rounded-2xl shadow-md glow-card transform hover:scale-105 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blush-pink mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                </svg>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Handwritten Notes</h3>
+                <p class="text-md text-dark-purple">Personalized messages or inspiring quotes add a heartfelt touch to every jar.</p>
+            </div>
+            <div class="flex flex-col items-center bg-white p-6 rounded-2xl shadow-md glow-card transform hover:scale-105 transition-transform duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-baby-blue mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                    <line x1="9" y1="9" x2="9.01" y2="9" />
+                    <line x1="15" y1="9" x2="15.01" y2="9" />
+                </svg>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">A Joyful Experience</h3>
+                <p class="text-md text-dark-purple">From unwrapping to discovering, each MagicJar promises a moment of pure delight.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-white bg-opacity-60 backdrop-blur-md rounded-3xl shadow-xl mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">How It Works</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+            <div class="flex flex-col items-center">
+                <span class="text-6xl text-lavender font-bold mb-4">1</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Choose Your Theme</h3>
+                <p class="text-md text-dark-purple">Select from our enchanting themes like Adventure, Self-Care, or Nostalgia.</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="text-6xl text-blush-pink font-bold mb-4">2</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Discover Surprises</h3>
+                <p class="text-md text-dark-purple">Unseal your jar to find unique stickers, mini letters, and a charming jewelry piece.</p>
+            </div>
+            <div class="flex flex-col items-center">
+                <span class="text-6xl text-baby-blue font-bold mb-4">3</span>
+                <h3 class="text-2xl font-semibold text-dark-purple mb-2">Experience Delight</h3>
+                <p class="text-md text-dark-purple">Enjoy a moment of wonder and share the magic with loved ones.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery/Sneak Peek Section -->
+    <section id="gallery" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-white bg-opacity-60 backdrop-blur-md rounded-3xl shadow-xl mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">Sneak Peek</h2>
+        <div class="relative w-full max-w-4xl mx-auto">
+            <div id="imageCarousel" class="overflow-hidden rounded-3xl shadow-xl glow-card">
+                <div class="flex transition-transform duration-500 ease-in-out" id="carouselContainer" style="transform: translateX(0);">
+                    <!-- Placeholder images (using placehold.co) with more thematic text -->
+                    <img src="https://placehold.co/800x450/f8c8dc/4a235a?text=Adventure+Jar+Unsealed" alt="Magic Jar Adventure Theme - Jar unsealed with contents" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                    <img src="https://placehold.co/800x450/b57edc/white?text=Self-Care+Serenity+Jar" alt="Magic Jar Self-Care Theme - tranquil scene" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                    <img src="https://placehold.co/800x450/89cff0/4a235a?text=Nostalgia+Treasures" alt="Magic Jar Nostalgia Theme - close up of retro items" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                    <img src="https://placehold.co/800x450/f8c8dc/white?text=A+Whisper+of+Joy" alt="Mini Letter Example - delicate paper scroll" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                    <img src="https://placehold.co/800x450/b57edc/4a235a?text=Sparkle+Sticker+Set" alt="Sticker Set Example - collection of shimmering stickers" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                    <img src="https://placehold.co/800x450/89cff0/white?text=Charming+Jewelry+Piece" alt="Jewelry Charm Example - elegant jewelry piece" class="w-full flex-shrink-0 rounded-3xl object-cover h-[250px] sm:h-[450px]">
+                </div>
+            </div>
+            <button id="prevBtn" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white bg-opacity-50 text-dark-purple p-3 rounded-full shadow-lg hover:bg-opacity-80 transition-all duration-300 transform hover:scale-110 active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+            </button>
+            <button id="nextBtn" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white bg-opacity-50 text-dark-purple p-3 rounded-full shadow-lg hover:bg-opacity-80 transition-all duration-300 transform hover:scale-110 active:scale-90">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-light-gray bg-opacity-70 backdrop-blur-md shadow-inner mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">What Our Magic Lovers Say</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white p-8 rounded-2xl shadow-lg glow-card transform hover:scale-105 transition-transform duration-300">
+                <p class="italic text-lg text-dark-purple mb-4">"Opening my MagicJar felt like pure enchantment! The self-care notes were exactly what I needed. Truly a delightful surprise."</p>
+                <p class="font-semibold text-lavender">- Sarah M.</p>
+            </div>
+            <div class="bg-white p-8 rounded-2xl shadow-lg glow-card transform hover:scale-105 transition-transform duration-300">
+                <p class="italic text-lg text-dark-purple mb-4">"The Adventure Awaits jar was so unique. The tiny compass charm is now my favorite! Can't wait for my next one."</p>
+                <p class="font-semibold text-blush-pink">- Alex R.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about-us" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-white bg-opacity-60 backdrop-blur-md rounded-3xl shadow-xl mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-dark-purple mb-12 glow-text">Our Story</h2>
+        <div class="max-w-3xl mx-auto text-lg text-dark-purple">
+            <p class="mb-4">
+                At MagicJar Studio, we believe in the power of small surprises to create big joy. Our journey began with a simple idea: to bottle moments of wonder and send them out into the world.
+            </p>
+            <p class="mb-4">
+                Each MagicJar is a labor of love, carefully curated with items that inspire, comfort, and delight. We pour our hearts into selecting unique stickers, crafting heartfelt mini letters, and sourcing charming jewelry, ensuring every jar tells its own enchanting story.
+            </p>
+            <p>
+                We're dedicated to bringing a touch of magic to your everyday, making every unboxing an unforgettable experience. Thank you for joining us on this whimsical adventure!
+            </p>
+        </div>
+    </section>
+
+    <!-- Email Sign-Up CTA Section -->
+    <section id="email-cta" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-lavender text-white mt-16 animated-border">
+        <div class="max-w-2xl mx-auto">
+            <h2 class="text-4xl sm:text-5xl font-bold mb-8 glow-text">Be the First to Open the Jar</h2>
+            <p class="text-lg sm:text-xl text-white mb-8">
+                Join our waitlist for exclusive updates, early access to new themes, and a sprinkle of magic directly to your inbox!
+            </p>
+            <form
+                id="emailCtaForm"
+                class="flex flex-col sm:flex-row gap-4 justify-center items-center w-full"
+                action="https://formspree.io/f/mqabgogl"
+                method="POST"
+            >
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Your email address"
+                    aria-label="Email address for join waitlist"
+                    class="p-4 rounded-full border-2 border-white focus:outline-none focus:ring-4 focus:ring-blush-pink focus:border-transparent w-full sm:w-2/3 text-lg bg-white bg-opacity-80 text-dark-purple placeholder-dark-purple/60"
+                    required
+                >
+                <button
+                    type="submit"
+                    class="bg-dark-purple text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-blush-pink transition-colors duration-300 glow-button transform hover:scale-105 active:scale-95 sparkle-on-hover w-full sm:w-1/3"
+                >
+                    Join Waitlist
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section id="social-media" class="w-full py-16 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-baby-blue text-dark-purple mt-16 animated-border">
+        <h2 class="text-4xl sm:text-5xl font-bold text-white mb-8 glow-text">Connect with Magic</h2>
+        <p class="text-xl sm:text-2xl text-white mb-8">Follow us for daily sparkles and sneak peeks!</p>
+        <p class="text-3xl sm:text-4xl font-semibold text-white mb-8">@magicjar.studio</p>
+        <div class="flex justify-center space-x-6">
+            <a href="https://instagram.com/magicjar.studio" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="text-white hover:text-dark-purple transition-colors duration-300 transform hover:scale-125">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-10 h-10 fill-current">
+                    <path d="M224.1 192.6c-5.4-9.3-16.5-12.7-26.6-8.3C158.1 199 128 238.1 128 281.3v27.2c0 43.2 30.1 82.3 69.5 97.1 10.1 4.4 21.2 1 26.6-8.3l12.7-21.9c5.4-9.3 2.1-20.4-7.3-25.7-24.8-14.3-40.4-40.6-40.4-69.2v-27.2c0-28.6 15.6-54.9 40.4-69.2 9.3-5.4 12.7-16.5 7.3-25.7l-12.7-21.9zM224 0C100.3 0 0 100.3 0 224s100.3 224 224 224 224-100.3 224-224S347.7 0 224 0zm0 400c-97.2 0-176-78.8-176-176S126.8 48 224 48s176 78.8 176 176-78.8 176-176 176zM224 160a64 64 0 100 128 64 64 0 100-128z"/>
+                </svg>
+            </a>
+            <a href="https://tiktok.com/@magicjar.studio" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="text-white hover:text-dark-purple transition-colors duration-300 transform hover:scale-125">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-10 h-10 fill-current">
+                    <path d="M448 209.9a210.1 210.1 0 0 1 -122.8-39.3V349.4A144.2 144.2 0 0 1 94.2 205.8C94.2 128 158 64.2 235.8 64.2c24.3 0 47.7 6.7 68.1 18.2V99.7c-28.6-5.8-57.6-9.1-87.3-9.1-84.3 0-153 68.7-153 153s68.7 153 153 153c80.2 0 118.8-49.7 127.6-100.4h-58.6v-53.7H448V209.9z"/>
+                </svg>
+            </a>
+            <a href="https://pinterest.com/magicjar.studio" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="text-white hover:text-dark-purple transition-colors duration-300 transform hover:scale-125">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-10 h-10 fill-current">
+                    <path d="M224 0C100.3 0 0 100.3 0 224c0 103.7 72.8 191.2 170 216.2 9.8 2.6 13.3-4.3 13.3-9.5V364.5c-44.5-8.4-60.1-40.4-60.1-40.4-7.3-18.7-18.1-23.7-18.1-23.7-14.8-10.1 1.1-9.9 1.1-9.9 16.4 1.2 24.9 16.8 24.9 16.8 14.6 24.9 38.2 17.7 47.4 13.5 1.5-10.5 5.7-17.7 10.4-21.7C160.8 300 96 270.3 96 179.5c0-40.3 14.4-73.4 38.3-99.3-3.9-10.4-16.6-49.4 3.7-98.3 0 0 31.3-10 102.4 38.7 29.8-8.2 61.6-12.2 93.3-12.2 31.8 0 63.5 4 93.3 12.2 71.1-48.7 102.4-38.7 102.4-38.7 20.3 48.8 7.6 87.9 3.7 98.3 23.9 25.9 38.3 59 38.3 99.3 0 90.8-64.8 120.5-125.7 131.6 9.6 8.3 18.2 24.5 18.2 49.6 0 35.9 0 78.7 0 89.6 0 5.2 3.5 12.1 13.3 9.5C375.2 415.2 448 327.7 448 224 448 100.3 347.7 0 224 0z"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full py-8 px-6 sm:px-8 md:px-12 lg:px-16 text-center bg-dark-purple text-white">
+        <nav class="mb-4">
+            <ul class="flex justify-center space-x-6 text-lg">
+                <li><a href="#" class="hover:text-blush-pink transition-colors duration-300">About</a></li>
+                <li><a href="#" class="hover:text-blush-pink transition-colors duration-300">Contact</a></li>
+                <li><a href="#" class="hover:text-blush-pink transition-colors duration-300">Privacy</a></li>
+            </ul>
+        </nav>
+        <p class="text-sm">&copy; 2025 MagicJar Studio. All rights reserved.</p>
+        <p class="text-sm mt-2">Made with magic ✨ by MagicJar Studio</p>
+    </footer>
+
+    <script>
+        // Carousel Logic - Adjusted to use pure JavaScript
+        let currentSlide = 0;
+        const images = [
+            'https://placehold.co/800x450/f8c8dc/4a235a?text=Adventure+Jar+Unsealed',
+            'https://placehold.co/800x450/b57edc/white?text=Self-Care+Serenity+Jar',
+            'https://placehold.co/800x450/89cff0/4a235a?text=Nostalgia+Treasures',
+            'https://placehold.co/800x450/f8c8dc/white?text=A+Whisper+of+Joy',
+            'https://placehold.co/800x450/b57edc/4a235a?text=Sparkle+Sticker+Set',
+            'https://placehold.co/800x450/89cff0/white?text=Charming+Jewelry+Piece',
+        ];
+        const carouselContainer = document.getElementById('carouselContainer');
+        let slideInterval;
+
+        function showSlide(index) {
+            if (!carouselContainer) return; // Add check if element exists
+            if (images.length === 0) return; // No images to show
+
+            if (index >= images.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = images.length - 1;
+            } else {
+                currentSlide = index;
+            }
+            carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function startSlideShow() {
+            clearInterval(slideInterval); // Clear any existing interval
+            if (images.length > 1) { // Only start if there's more than one image
+                slideInterval = setInterval(() => {
+                    showSlide(currentSlide + 1);
+                }, 5000); // Change image every 5 seconds
+            }
+        }
+
+        // Event Listeners for carousel buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (carouselContainer) { // Ensure carousel container exists before setting up
+                // Dynamically add images to the carouselContainer
+                images.forEach(src => {
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = 'Magic Jar Sneak Peek';
+                    img.classList.add('w-full', 'flex-shrink-0', 'rounded-3xl', 'object-cover', 'h-[250px]', 'sm:h-[450px]');
+                    carouselContainer.appendChild(img);
+                });
+
+                showSlide(0); // Set initial slide after images are added
+                startSlideShow(); // Start slideshow after images are added
+            }
+
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    showSlide(currentSlide - 1);
+                    startSlideShow(); // Restart interval on manual navigation
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    showSlide(currentSlide + 1);
+                    startSlideShow(); // Restart interval on manual navigation
+                });
+            }
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
